@@ -1,7 +1,5 @@
-Create Database Project;
-Use Project;
 
-
+use project;
 Create Table Insurance(
  insurance_id  varchar(50)  Primary Key,
  company_name varchar(50) NOT NULL,
@@ -187,7 +185,12 @@ VALUES
 ('INS005', 'Kaiser', 'KS-16171', 95, 'Active', '2023-04-10', '2024-04-09'),
 ('INS006', 'Humana', 'HU-81920', 75, 'Inactive', '2023-01-20', '2023-12-19'),
 ('INS007', 'Medicare', 'MC-21222', 100, 'Active', '2023-01-01', '2023-12-31'),
-('INS008', 'Anthem', 'AN-32425', 88, 'Pending', '2024-01-01', '2024-12-31');
+('INS008', 'Anthem', 'AN-32425', 88, 'Pending', '2024-01-01', '2024-12-31'),
+('INS009', 'Blue Cross', 'BC-67890', 40, 'Active', '2025-01-01', '2027-02-03'),
+('INS010', 'Aetna', 'AE-78901', 10, 'Active', '2023-03-15', '2024-03-14'),
+('INS011', 'UnitedHealth', 'UH-22223', 20, 'Active', '2023-06-01', '2025-06-30'),
+('INS012', 'Cigna', 'CG-41516', 12, 'Canceled', '2023-09-01', '2024-08-01');
+
 
 INSERT INTO Patient (patient_id, name, gender, DateofBirth, phone, address, insurance_id, emergency_contact_phone, ssn)
 VALUES
@@ -198,7 +201,14 @@ VALUES
 ('PAT005', 'Robert Brown', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS005', '555-543-2109', '567-89-0123'),
 ('PAT006', 'Lisa Davis', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS006', '555-432-1098', '678-90-1234'),
 ('PAT007', 'Michael Miller', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS007', '555-321-0987', '789-01-2345'),
-('PAT008', 'Emily Taylor', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS008', '555-210-9876', '890-12-3456');
+('PAT008', 'Emily Taylor', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS008', '555-210-9876', '890-12-3456'),
+('PAT009', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS009', '502-543-2109', '111-89-0123'),
+('PAT010', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS010', '401-432-895', '688-90-1234'),
+('PAT011', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS011', '961-321-0012', '986-01-2345'),
+('PAT012', 'merna alahmad', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS012', '402-210-9545', '892-12-3456'),
+('PAT013', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy',null,  '502-543-2109', '111-89-0123'),
+('PAT014', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', null,'401-432-895', '688-90-1234'),
+('PAT015', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline',null , '961-321-0012', '986-01-2345');
 
 
 INSERT INTO Department (dept_id, dept_name, floor, head_doctor_id, department_status)
@@ -232,7 +242,15 @@ VALUES
 ('APP005', 'PAT005', 'DOC005', 'DEPT005', '2024-01-19', '15:45:00', 'Scheduled', 'Procedure', GETDATE()),
 ('APP006', 'PAT006', 'DOC006', 'DEPT006', '2024-01-20', '08:30:00', 'Completed', 'Emergency', GETDATE()),
 ('APP007', 'PAT007', 'DOC007', 'DEPT007', '2024-01-21', '13:20:00', 'Scheduled', 'Consultation', GETDATE()),
-('APP008', 'PAT008', 'DOC008', 'DEPT008', '2024-01-22', '16:00:00', 'Completed', 'Follow-up', GETDATE());
+('APP008', 'PAT008', 'DOC008', 'DEPT008', '2024-01-22', '16:00:00', 'Completed', 'Follow-up', GETDATE()),
+('APP009', 'PAT009', 'DOC001', 'DEPT001', '2025-01-15', '08:00:00', 'Completed', 'Consultation', GETDATE()),
+('APP010', 'PAT010', 'DOC002', 'DEPT002', '2024-01-16', '10:30:00', 'Scheduled', 'Follow-up', GETDATE()),
+('APP011', 'PAT011', 'DOC001', 'DEPT001', '2024-08-15', '09:00:00', 'Completed', 'Consultation', GETDATE()),
+('APP012', 'PAT012', 'DOC002', 'DEPT002', '2024-01-16', '11:30:00', 'Scheduled', 'Check-up', GETDATE()),
+('APP013', 'PAT009', 'DOC004', 'DEPT004', '2025-01-15', '08:00:00', 'Completed', 'Consultation', GETDATE()),
+('APP014', 'PAT009', 'DOC002', 'DEPT002', '2024-01-16', '10:30:00', 'Scheduled', 'Follow-up', GETDATE()),
+('APP015', 'PAT010', 'DOC001', 'DEPT001', '2024-08-15', '09:00:00', 'Completed', 'Consultation', GETDATE()),
+('APP016', 'PAT012', 'DOC002', 'DEPT002', '2024-01-16', '11:30:00', 'Scheduled', 'Check-up', GETDATE());
 
 
 INSERT INTO Prescription (prescription_id, appointment_id, notes, date_issued, status)
@@ -256,9 +274,8 @@ VALUES
 ('MED005', 'Albuterol', 'Asthma', 60, '18.25', 'Injection', 'MediSupply', '2025-01-20'),
 ('MED006', 'Ibuprofen', 'Pain Relief', 200, '5.99', 'Tablet', 'DrugCo', '2026-02-28'),
 ('MED007', 'Omeprazole', 'Acid Reducer', 120, '14.50', 'Capsule', 'PharmaCorp', '2025-08-15'),
-('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10');
-INSERT INTO Medication (med_id, name, category, stock_qty, unit_price, form, supplier, exp_date)
-VALUES ('MED009', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2028-10-10');
+('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10'),
+('MED009', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2028-10-10');
 
 
 INSERT INTO Prescription_Details (prescription_id, med_id, dosage, duration, quantity)
@@ -292,8 +309,15 @@ VALUES
 (105, 400, 'VIP Suite','Occupied','Luxury suite with living area and premium amenities', 1),
 (106, 220, 'Private Room','Available', 'Private room with garden view', 1),
 (107, 350, 'ICU','Occupied','ICU with ventilator support', 1),
-(108, 150, 'Standard','Available', 'General ward room', 6)
-;
+(108, 150, 'Standard','Available', 'General ward room', 6),
+(109, 250, 'Private Room','Available','Private room with ensuite bathroom and TV', 1),
+(110, 200, 'Semi-Private','Available', 'Shared room with two beds and curtain divider', 2),
+(112, 300, 'ICU','Available',  'Intensive Care Unit with monitoring equipment', 1),
+(113, 180, 'Standard','Available', 'Standard ward room with four beds', 4);
+
+
+
+
 
 INSERT INTO Payments (payment_id, amount_paid, method, payment_date, invoice_id, transaction_id, payment_status)
 VALUES
@@ -382,4 +406,101 @@ UPDATE Lab_Report
 SET tech_id = 2
 WHERE report_id = 1;
 
+
+--selction:
+--1:each patient with their insurance company name and percent they covered
+select p.patient_id,p.name ,i.company_name,i.coverage_percent
+from Patient p 
+inner join Insurance i ON i.insurance_id=p.insurance_id;
+--2:each doctor id and name and how many appointment each doctor have
+select d.doctor_id,d.name,COUNT(a.doctor_id) AS total_appof_d
+from Doctor d
+Inner join Appointment a ON a.doctor_id=d.doctor_id
+group by d.doctor_id, d.name
+;
+--3:most expensive lab test
+select  *
+from Lab_Test l
+where l.cost=(select MAX(l1.cost) from Lab_Test l1 );
+--4:medication that doeasnt have any prescription
+select *
+From Medication l
+where  NOT EXISTS (
+    SELECT 1 
+    From Prescription_Details p 
+    Where p.med_id = l.med_id
+);
+
+--5:patient that have no insurance
+select *
+from Patient p
+where p.insurance_id is null;
+
+--6:count appointment of patient that has more than 1 appointment
+SELECT p.patient_id, p.name,p.gender,COUNT(a.appointment_id) AS total_appointments
+FROM Patient p
+JOIN Appointment a 
+    ON p.patient_id = a.patient_id
+GROUP BY 
+    p.patient_id,p.name, p.gender
+HAVING COUNT(a.appointment_id) > 1;
+
+--7:THE DOCTOR THAT HAVE THE HIGHEST COMPLETED APPOINTMENT 
+select d.doctor_id ,d.name ,COUNT(a.appointment_id)
+from Doctor d
+join Appointment a ON d.doctor_id=a.doctor_id
+where a.status='Completed'
+group by d.doctor_id,d.name
+HAVING COUNT(a.appointment_id) = (
+    SELECT MAX(appointment_count)
+    FROM (
+        SELECT COUNT(appointment_id) as appointment_count
+        FROM Appointment
+        WHERE status = 'Completed'
+        GROUP BY doctor_id
+    ) as counts);
+	--8:all medications that are about to expire (within 30 days) and their current stock quantity.
+	select m.med_id,m.name,m.stock_qty
+	from Medication m
+	where  DATEDIFF(day, GETDATE(), exp_date) BETWEEN 0 AND 30
+;
+
+--9:patients who have both appointments and admissions records.
+SELECT p.*
+FROM Patient p
+WHERE EXISTS (SELECT 1 FROM Appointment a WHERE a.patient_id = p.patient_id)
+  AND EXISTS (SELECT 1 FROM admissions s WHERE s.patient_id = p.patient_id);
+--10:Calculate the total amount paid for each payment method.
+select p.method,SUM(p.amount_paid) as totalpayed
+From Payments p
+group by p.method;
+
+--11:rooms that have never been occupied in any admission.
+SELECT *
+FROM Rooms r
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM admissions a 
+    WHERE a.room_id = r.room_id
+);
+--12:doctors along with their department names and floor numbers
+select *,dp.dept_name,dp.floor
+from Doctor d 
+join Department dp ON d.dept_id=dp.dept_id
+ ;
+
+ --13:the average cost of lab tests for each lab type
+ select l.lab_type,AVG(l.cost)
+ from Lab_Test l
+ group by l.lab_type;
+
+ --14:patients who have invoices with payment status 'Pending' or 'Overdue'
+ select *
+ from Patient p
+ join Invoice s ON p.patient_id=s.patient_id
+ where s.payment_status IN('Pending','Overdue');
+ --15: how many prescriptions each medication appears in.
+ select p.med_id,COUNT(p.med_id) as apperin
+ from Prescription_Details p
+ group by p.med_id;
 
