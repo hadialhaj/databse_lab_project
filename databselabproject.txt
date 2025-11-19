@@ -2,7 +2,7 @@ Create Database Project;
 Use Project;
 
 
-Create Table Insurance(
+reate Table Insurance(
  insurance_id  varchar(50)  Primary Key,
  company_name varchar(50) NOT NULL,
  policy_number varchar(50) NOT NULL,
@@ -150,7 +150,35 @@ Alter Table Medication Drop column min_stock_level;
 Alter Table Patient ADD inserted_by varchar(50);
 Alter Table Patient Drop column inserted_by;
 
-INSERT INTO Insurance (insurance_id, company_name, policy_number, coverage_percent, policy_status, policy_start_date, policy_end_date)
+
+ALTER TABLE Rooms
+ADD room_description VARCHAR(100),
+    room_capacity INT;
+
+ALTER TABLE Payments
+ADD transaction_id VARCHAR(50),
+    payment_status VARCHAR(50) CHECK(payment_status IN('Pending','Completed','Failed'));
+
+ALTER TABLE Admissions
+ADD admission_notes VARCHAR(255),
+    admission_type VARCHAR(50) CHECK(admission_type IN('Emergency','Scheduled','Observation'));
+
+ALTER TABLE Lab_Test
+ADD lab_notes VARCHAR(255),
+    lab_type VARCHAR(50) CHECK(lab_type IN('Blood','Urine','Imaging','Other'));
+
+
+ALTER TABLE Lab_Technician
+ADD email VARCHAR(50),
+    hire_date DATE;
+
+ALTER TABLE Lab_Report
+ADD report_type VARCHAR(50),
+    reviewed_by VARCHAR(50);
+
+
+
+INSERT INTO Insurance (insurance_id, company_name, policy_number, coverage_percent, policy_status,policy_start_date,policy_end_date)
 VALUES
 ('INS001', 'Blue Cross', 'BC-12345', 80, 'Active', '2023-01-01', '2024-12-31'),
 ('INS002', 'Aetna', 'AE-67890', 90, 'Active', '2023-03-15', '2024-03-14'),
@@ -255,6 +283,103 @@ VALUES
 ('INV007', 'PAT007', 'APP007', 180.00, '2024-01-21', 'Pending', 'Insurance'),
 ('INV008', 'PAT008', 'APP008', 195.25, '2024-01-22', 'Written Off', 'Split Payment');
 
+INSERT INTO Rooms (room_id, daily_rate, room_type, status, room_description, room_capacity)
+VALUES
+(101, 250, 'Private Room','Occupied','Private room with ensuite bathroom and TV', 1),
+(102, 200, 'Semi-Private','Available', 'Shared room with two beds and curtain divider', 2),
+(103, 300, 'ICU','Occupied',  'Intensive Care Unit with monitoring equipment', 1),
+(104, 180, 'Standard','Available', 'Standard ward room with four beds', 4),
+(105, 400, 'VIP Suite','Occupied','Luxury suite with living area and premium amenities', 1),
+(106, 220, 'Private Room','Available', 'Private room with garden view', 1),
+(107, 350, 'ICU','Occupied','ICU with ventilator support', 1),
+(108, 150, 'Standard','Available', 'General ward room', 6)
+;
+
+INSERT INTO Payments (payment_id, amount_paid, method, payment_date, invoice_id, transaction_id, payment_status)
+VALUES
+(1, 500.00, 'Credit Card', '2024-01-15', 'INV001', 'TXN001234', 'Completed'),
+(2, 250.00, 'Cash','2024-01-16', 'INV002', 'TXN001235', 'Completed'),
+(3, 750.00, 'Insurance','2024-01-17', 'INV003', 'TXN001236', 'Pending'),
+(4, 300.00, 'Debit Card','2024-01-18', 'INV004', 'TXN001237', 'Completed'),
+(5, 450.00, 'Bank Transfer','2024-01-19', 'INV005', 'TXN001238', 'Failed'),
+(6, 600.00, 'Credit Card', '2024-01-20', 'INV006', 'TXN001239', 'Completed'),
+(7, 350.00, 'Cash','2024-01-21', 'INV007', 'TXN001240', 'Pending'),
+(8, 800.00, 'Insurance','2024-01-22', 'INV008', 'TXN001241', 'Completed');
+
+INSERT INTO admissions (admission_id, admission_date, discharge_date, patient_id, room_id, admission_notes, admission_type)
+VALUES
+(1, '2024-01-10', '2024-01-15','PAT001', 101, 'Patient admitted for routine surgery recovery', 'Scheduled'),
+(2, '2024-01-12', 'Pending','PAT002', 103, 'Critical condition, requires constant monitoring', 'Emergency'),
+(3, '2024-01-14', '2024-01-20','PAT003', 105, 'VIP patient with special dietary requirements', 'Scheduled'),
+(4, '2024-01-16', 'Pending','PAT004', 102, 'Patient under observation for 24 hours', 'Observation'),
+(5, '2024-01-18', 'Pending','PAT005', 104, 'Fever and respiratory symptoms', 'Emergency'),
+(6, '2024-01-20', 'Pending','PAT006', 106, 'Post-operative care required', 'Scheduled'),
+(7, '2024-01-21', 'Pending','PAT007', 107, 'Cardiac emergency, stable now', 'Emergency'),
+(8, '2024-01-22', '2024-01-25', 'PAT008', 108, 'Observation for concussion', 'Observation');
+
+INSERT INTO Lab_Test (test_id, test_name, result, cost, appointment_id, lab_notes, lab_type)
+VALUES
+(1, 'Blood Test','Normal',75.00,  'APP001', 'Fasting blood sample collected at 8:00 AM', 'Blood'),
+(2, 'MRI Scan','Clear',500.00,  'APP002', 'Full body MRI with contrast dye', 'Imaging'),
+(3, 'Urine Analysis','Abnormal',50.00,  'APP003', 'Mid-stream urine sample shows cloudiness', 'Urine'),
+(4, 'X-Ray Chest','Normal',120.00,  'APP004', 'PA and lateral views taken', 'Imaging'),
+(5, 'ECG','Regular',90.00,  'APP005', '12-lead ECG performed at rest', 'Other'),
+(6, 'CT Scan','Normal',650.00, 'APP006', 'CT abdomen with oral contrast', 'Imaging'),
+(7, 'Blood Sugar','High', 45.00, 'APP007', 'Random blood glucose test', 'Blood'),
+(8, 'Ultrasound','Clear',280.00, 'APP008', 'Abdominal ultrasound after 6hr fasting', 'Imaging')
+;
+
+INSERT INTO Lab_Technician (tech_id, name, phone, specialization, email, hire_date)
+VALUES
+(1, 'Dr. Sarah Johnson', '555-0101', 'Hematology', 'sarah.johnson@hospital.com', '2020-03-15'),
+(2, 'Mike Chen','555-0102', 'Radiology', 'mike.chen@hospital.com', '2021-06-20'),
+(3, 'Emily Davis','555-0103', 'Microbiology', 'emily.davis@hospital.com', '2019-11-08'),
+(4, 'Robert Wilson','555-0104', 'Pathology', 'robert.wilson@hospital.com', '2018-02-28'),
+(5, 'Lisa Martinez','555-0105', 'Biochemistry', 'lisa.martinez@hospital.com', '2022-01-10'),
+(6, 'Dr. James Brown','555-0106', 'Genetics', 'james.brown@hospital.com', '2023-04-12'),
+(7, 'Karen White','555-0107', 'Immunology', 'karen.white@hospital.com', '2020-09-05'),
+(8, 'David Lee','555-0108', 'Toxicology', 'david.lee@hospital.com', '2021-12-15');
+
+INSERT INTO lab_report (report_id, report_date, notes, tech_id, report_type, reviewed_by)
+VALUES
+(1, '2024-01-15', 'Complete blood count within normal ranges', 1, 'Hematology', 'Dr. Smith'),
+(2, '2024-01-16', 'MRI shows no abnormalities detected',2, 'Radiology', 'Dr. Johnson'),
+(3, '2024-01-17', 'Urine culture positive for infection',3, 'Microbiology', 'Dr. Brown'),
+(4, '2024-01-18', 'Chest X-ray clear, no pneumonia',4, 'Radiology', 'Dr. Wilson'),
+(5, '2024-01-19', 'ECG shows normal sinus rhythm',5, 'Cardiology', 'Dr. Garcia'),
+(6, '2024-01-20', 'CT scan shows no internal injuries',6, 'Radiology', 'Dr. Chen'),
+(7, '2024-01-21', 'Blood glucose levels elevated, follow up needed',7, 'Biochemistry', 'Dr. Taylor'),
+(8, '2024-01-22', 'Abdominal ultrasound normal',8, 'Radiology', 'Dr. Martinez');
+
+
 Update Medication set stock_qty+=50 where name='Sertraline' AND YEAR(exp_date)>'2025';
+
 update Appointment set status='completed' where appointment_id='APP007';
+
 update Insurance set policy_status='Active' where insurance_id='INS006';
+
+UPDATE Rooms
+SET daily_rate = daily_rate + 50
+WHERE room_id = 101;
+
+UPDATE Payments
+SET amount_paid = amount_paid + 100
+WHERE payment_id = 1;
+
+UPDATE Admissions
+SET room_id = 102
+WHERE admission_id = 1;
+
+UPDATE Lab_Test
+SET cost = cost + 20
+WHERE test_id = 1;
+
+UPDATE Lab_Technician
+SET specialization = 'General Lab'
+WHERE tech_id = 1;
+
+UPDATE Lab_Report
+SET tech_id = 2
+WHERE report_id = 1;
+
+
