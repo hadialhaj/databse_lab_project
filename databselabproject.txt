@@ -1,0 +1,267 @@
+Create Database Project;
+Use Project;
+
+
+Create Table Insurance(
+ insurance_id  varchar(50)  Primary Key,
+ company_name varchar(50) NOT NULL,
+ policy_number varchar(50) NOT NULL,
+ coverage_percent INT 
+ );
+ 
+Create Table Patient(
+patient_id varchar(50)  Primary Key,
+name varchar(50) , 
+gender varchar(50) check(gender IN('Male','Female')) NOT NULL, 
+DateofBirth Date,
+phone varchar(50) NOT NULL,
+address varchar(50) NOT NULL,
+insurance_id varchar(50) foreign key (insurance_id) references Insurance(insurance_id)
+);
+Create Table Department(
+dept_id  varchar(50)  Primary Key, 
+dept_name varchar(50), 
+floor varchar(10),
+head_doctor_id int
+
+
+);
+Create Table Doctor(
+doctor_id  varchar(50)  Primary Key, 
+name varchar(50), 
+specialization varchar(50), 
+phone varchar(15), 
+email varchar(50), 
+dept_id varchar(50) foreign key (dept_id) references Department(dept_id)
+);
+
+
+
+
+
+Create Table Appointment(
+appointment_id varchar(50)  Primary Key,
+patient_id varchar(50) foreign key (patient_id) references Patient(patient_id),
+doctor_id  varchar(50) foreign key (doctor_id) references Doctor(doctor_id),
+dept_id varchar(50) foreign key (dept_id) references Department(dept_id),
+date Date , 
+time Time,
+status varchar(50) check(status IN('Scheduled','Completed','Cancelled')) NOT NULL
+
+);
+Create Table Prescription(
+prescription_id varchar(50)  Primary Key, 
+appointment_id varchar(50) foreign key (appointment_id) references Appointment(appointment_id), 
+notes varchar(100), 
+date_issued Date NOT NULL
+);
+
+Create Table Medication (
+med_id varchar(50)  Primary Key,
+name varchar(50), 
+category varchar(50),
+stock_qty int NOT NULL,
+unit_price varchar(8)
+);
+
+Create Table Prescription_Details(
+prescription_id varchar(50) foreign key (prescription_id) references Prescription(prescription_id),
+med_id varchar(50) foreign key (med_id) references Medication(med_id), 
+dosage varchar(10) NOT NULL,
+duration varchar(50), 
+quantity int NOT NULL
+);
+Create Table Invoice(
+invoice_id  varchar(50)  Primary Key,
+patient_id varchar(50) foreign key (patient_id) references Patient(patient_id), 
+appointment_id varchar(50) foreign key (appointment_id) references Appointment(appointment_id),
+total_amount money NOT NULL, 
+date Date ,
+payment_status varchar(50) check(payment_status IN ( 'Pending', 'Partially Paid', 'Paid in Full', 'Overdue', 'Written Off'))  NOT NULL);
+
+
+ CREATE TABLE Rooms (
+    room_id INT  PRIMARY KEY,
+    daily_rate VARCHAR(10) NOT NULL,
+    room_type VARCHAR(50) NOT NULL,
+    status VARCHAR(20) NOT NULL
+);
+
+create table Payments(
+payment_id int primary key,
+amount_paid money not null,
+method varchar(50) not null,
+payment_date DATE not null,
+invoice_id varchar(50) foreign key (invoice_id) references Invoice(invoice_id)
+
+);
+
+CREATE TABLE admissions(
+    admission_id INT  PRIMARY KEY,
+    admission_date DATE ,
+    discharge_date VARCHAR(50),
+    patient_id varchar(50) foreign key (patient_id) references Patient(patient_id) ,
+    room_id INT FOREIGN KEY (room_id) REFERENCES rooms(room_id)
+,
+    
+);
+
+CREATE TABLE Lab_Test(
+   test_id INT PRIMARY KEY,
+    test_name VARCHAR(50) NOT NULL,
+    result VARCHAR(50) NOT NULL,
+    cost money NOT NULL,
+    appointment_id varchar(50) FOREIGN KEY (appointment_id) REFERENCES Appointment(appointment_id)
+);
+
+CREATE TABLE Lab_Technician (
+    tech_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) ,
+    specialization VARCHAR(100) 
+);
+
+CREATE TABLE lab_report (
+    report_id INT NOT NULL PRIMARY KEY,
+    report_date DATE NOT NULL,
+    notes VARCHAR(255),
+    tech_id INT FOREIGN KEY (tech_id) REFERENCES Lab_Technician(tech_id),
+    
+);
+
+
+Alter Table Insurance Add   policy_status varchar(50)  check(policy_status IN('Active','Canceled','Inactive','Pending'));
+Alter Table Patient ADD  emergency_contact_phone varchar(20);
+Alter Table Patient ADD  ssn varchar(20) ;
+Alter Table Department ADD department_status varchar(50) check(department_status IN('Active','Under Review','Inactive'));
+ALter Table Doctor ADD license_number varchar(20) ;
+Alter table Appointment ADD appointment_type varchar(50) check(appointment_type IN('Consultation', 'Follow-up', 'Check-up', 'Emergency', 'Procedure',' Telemedicine'));
+Alter Table Prescription ADD status varchar(100) check(status IN('Active','Canceled','Completed','Expired','On Hold'));
+Alter Table Medication ADD form varchar(50) check(form IN('Tablet', 'Capsule', 'Liquid', 'Cream', 'Injection'));
+ALTER TABLE Prescription ADD CONSTRAINT UQ_Prescription_notes UNIQUE (notes);
+
+Alter Table Invoice  ADD payment_method varchar(50) check(payment_method IN('Cash', 'Credit Card', 'Insurance', 'Split Payment')); 
+Alter Table Insurance ADD policy_start_date Date;
+Alter Table Insurance ADD policy_end_date Date;
+Alter Table Appointment ADD last_updated Datetime DEFAULT GETDATE();
+Alter Table Medication ADD supplier VARCHAR(50);
+Alter Table  Medication ADD exp_date Date;
+Alter Table Medication ADD  min_stock_level INT ;
+Alter Table Medication Drop column min_stock_level;
+Alter Table Patient ADD inserted_by varchar(50);
+Alter Table Patient Drop column inserted_by;
+
+INSERT INTO Insurance (insurance_id, company_name, policy_number, coverage_percent, policy_status, policy_start_date, policy_end_date)
+VALUES
+('INS001', 'Blue Cross', 'BC-12345', 80, 'Active', '2023-01-01', '2024-12-31'),
+('INS002', 'Aetna', 'AE-67890', 90, 'Active', '2023-03-15', '2024-03-14'),
+('INS003', 'UnitedHealth', 'UH-11121', 70, 'Active', '2023-06-01', '2024-05-31'),
+('INS004', 'Cigna', 'CG-31415', 85, 'Canceled', '2023-02-01', '2023-08-01'),
+('INS005', 'Kaiser', 'KS-16171', 95, 'Active', '2023-04-10', '2024-04-09'),
+('INS006', 'Humana', 'HU-81920', 75, 'Inactive', '2023-01-20', '2023-12-19'),
+('INS007', 'Medicare', 'MC-21222', 100, 'Active', '2023-01-01', '2023-12-31'),
+('INS008', 'Anthem', 'AN-32425', 88, 'Pending', '2024-01-01', '2024-12-31');
+
+INSERT INTO Patient (patient_id, name, gender, DateofBirth, phone, address, insurance_id, emergency_contact_phone, ssn)
+VALUES
+('PAT001', 'John Smith', 'Male', '1985-05-15', '555-123-4567', '123 Main St, Boston', 'INS001', '555-987-6543', '123-45-6789'),
+('PAT002', 'Maria Garcia', 'Female', '1990-08-22', '555-234-5678', '456 Oak Ave, Cambridge', 'INS002', '555-876-5432', '234-56-7890'),
+('PAT003', 'James Wilson', 'Male', '1978-12-03', '555-345-6789', '789 Pine St, Somerville', 'INS003', '555-765-4321', '345-67-8901'),
+('PAT004', 'Sarah Johnson', 'Female', '1995-03-18', '555-456-7890', '321 Elm St, Boston', 'INS004', '555-654-3210', '456-78-9012'),
+('PAT005', 'Robert Brown', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS005', '555-543-2109', '567-89-0123'),
+('PAT006', 'Lisa Davis', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS006', '555-432-1098', '678-90-1234'),
+('PAT007', 'Michael Miller', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS007', '555-321-0987', '789-01-2345'),
+('PAT008', 'Emily Taylor', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS008', '555-210-9876', '890-12-3456');
+
+
+INSERT INTO Department (dept_id, dept_name, floor, head_doctor_id, department_status)
+VALUES
+('DEPT001', 'Cardiology', '3', 1001, 'Active'),
+('DEPT002', 'Orthopedics', '2', 1002, 'Active'),
+('DEPT003', 'Pediatrics', '1', 1003, 'Active'),
+('DEPT004', 'Neurology', '4', 1004, 'Under Review'),
+('DEPT005', 'Oncology', '5', 1005, 'Active'),
+('DEPT006', 'Emergency', '1', 1006, 'Active'),
+('DEPT007', 'Surgery', '3', 1007, 'Active'),
+('DEPT008', 'Radiology', '2', 1008, 'Inactive');
+
+INSERT INTO Doctor (doctor_id, name, specialization, phone, email, dept_id, license_number)
+VALUES
+('DOC001', 'Dr. Emily Chen', 'Cardiologist', '555-1001', 'echen@hospital.com', 'DEPT001', 'LIC123456'),
+('DOC002', 'Dr. Michael Brown', 'Orthopedic Surgeon', '555-1002', 'mbrown@hospital.com', 'DEPT002', 'LIC234567'),
+('DOC003', 'Dr. Sarah Johnson', 'Pediatrician', '555-1003', 'sjohnson@hospital.com', 'DEPT003', 'LIC345678'),
+('DOC004', 'Dr. David Wilson', 'Neurologist', '555-1004', 'dwilson@hospital.com', 'DEPT004', 'LIC456789'),
+('DOC005', 'Dr. Jennifer Lee', 'Oncologist', '555-1005', 'jlee@hospital.com', 'DEPT005', 'LIC567890'),
+('DOC006', 'Dr. Robert Martinez', 'Emergency Medicine', '555-1006', 'rmartinez@hospital.com', 'DEPT006', 'LIC678901'),
+('DOC007', 'Dr. Amanda White', 'General Surgeon', '555-1007', 'awhite@hospital.com', 'DEPT007', 'LIC789012'),
+('DOC008', 'Dr. Kevin Adams', 'Radiologist', '555-1008', 'kadams@hospital.com', 'DEPT008', 'LIC890123');
+
+INSERT INTO Appointment (appointment_id, patient_id, doctor_id, dept_id, date, time, status, appointment_type, last_updated)
+VALUES
+('APP001', 'PAT001', 'DOC001', 'DEPT001', '2024-01-15', '09:00:00', 'Completed', 'Consultation', GETDATE()),
+('APP002', 'PAT002', 'DOC002', 'DEPT002', '2024-01-16', '10:30:00', 'Scheduled', 'Follow-up', GETDATE()),
+('APP003', 'PAT003', 'DOC003', 'DEPT003', '2024-01-17', '14:00:00', 'Completed', 'Check-up', GETDATE()),
+('APP004', 'PAT004', 'DOC004', 'DEPT004', '2024-01-18', '11:15:00', 'Cancelled', 'Consultation', GETDATE()),
+('APP005', 'PAT005', 'DOC005', 'DEPT005', '2024-01-19', '15:45:00', 'Scheduled', 'Procedure', GETDATE()),
+('APP006', 'PAT006', 'DOC006', 'DEPT006', '2024-01-20', '08:30:00', 'Completed', 'Emergency', GETDATE()),
+('APP007', 'PAT007', 'DOC007', 'DEPT007', '2024-01-21', '13:20:00', 'Scheduled', 'Consultation', GETDATE()),
+('APP008', 'PAT008', 'DOC008', 'DEPT008', '2024-01-22', '16:00:00', 'Completed', 'Follow-up', GETDATE());
+
+
+INSERT INTO Prescription (prescription_id, appointment_id, notes, date_issued, status)
+VALUES
+('PRES001', 'APP001', 'Take with food, avoid alcohol', '2024-01-15', 'Active'),
+('PRES002', 'APP002', 'Complete full course', '2024-01-16', 'Completed'),
+('PRES003', 'APP003', 'May cause drowsiness', '2024-01-17', 'Active'),
+('PRES004', 'APP004', 'Take on empty stomach', '2024-01-18', 'Canceled'),
+('PRES005', 'APP005', 'Refrigerate medication', '2024-01-19', 'Active'),
+('PRES006', 'APP006', 'Do not operate machinery', '2024-01-20', 'Completed'),
+('PRES007', 'APP007', 'Take twice daily', '2024-01-21', 'On Hold'),
+('PRES008', 'APP008', 'Complete 10-day course', '2024-01-22', 'Expired');
+
+
+INSERT INTO Medication (med_id, name, category, stock_qty, unit_price, form, supplier, exp_date)
+VALUES
+('MED001', 'Amoxicillin', 'Antibiotic', 100, '15.99', 'Capsule', 'PharmaCorp', '2025-06-30'),
+('MED002', 'Lisinopril', 'Blood Pressure', 75, '12.50', 'Tablet', 'MediSupply', '2024-12-31'),
+('MED003', 'Metformin', 'Diabetes', 150, '8.75', 'Tablet', 'DrugCo', '2025-03-15'),
+('MED004', 'Atorvastatin', 'Cholesterol', 90, '22.00', 'Tablet', 'PharmaCorp', '2024-11-30'),
+('MED005', 'Albuterol', 'Asthma', 60, '18.25', 'Injection', 'MediSupply', '2025-01-20'),
+('MED006', 'Ibuprofen', 'Pain Relief', 200, '5.99', 'Tablet', 'DrugCo', '2026-02-28'),
+('MED007', 'Omeprazole', 'Acid Reducer', 120, '14.50', 'Capsule', 'PharmaCorp', '2025-08-15'),
+('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10');
+
+INSERT INTO Prescription_Details (prescription_id, med_id, dosage, duration, quantity)
+VALUES
+('PRES001', 'MED001', '500mg', '10 days', 20),
+('PRES002', 'MED002', '10mg', '30 days', 30),
+('PRES003', 'MED003', '850mg', '90 days', 90),
+('PRES001', 'MED006', '400mg', '7 days', 14),
+('PRES004', 'MED004', '20mg', '30 days', 30),
+('PRES005', 'MED005', '2puffs', '60 days', 1),
+('PRES006', 'MED007', '20mg', '30 days', 30),
+('PRES007', 'MED008', '50mg', '90 days', 90);
+
+INSERT INTO Invoice (invoice_id, patient_id, appointment_id, total_amount, date, payment_status, payment_method)
+VALUES
+('INV001', 'PAT001', 'APP001', 150.00, '2024-01-15', 'Paid in Full', 'Credit Card'),
+('INV002', 'PAT002', 'APP002', 200.00, '2024-01-16', 'Pending', 'Insurance'),
+('INV003', 'PAT003', 'APP003', 175.50, '2024-01-17', 'Partially Paid', 'Split Payment'),
+('INV004', 'PAT004', 'APP004', 300.00, '2024-01-18', 'Pending', 'Insurance'),
+('INV005', 'PAT005', 'APP005', 450.00, '2024-01-19', 'Overdue', 'Credit Card'),
+('INV006', 'PAT006', 'APP006', 225.75, '2024-01-20', 'Paid in Full', 'Cash'),
+('INV007', 'PAT007', 'APP007', 180.00, '2024-01-21', 'Pending', 'Insurance'),
+('INV008', 'PAT008', 'APP008', 195.25, '2024-01-22', 'Written Off', 'Split Payment');
+
+
+
+select * from Insurance;
+select * from Patient;
+select * from Doctor;
+select * from Department;
+select * from Medication;
+
+select * from Appointment;
+select * from Prescription;
+select * from Prescription_Details;
+select * from Invoice;
