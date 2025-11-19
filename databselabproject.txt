@@ -138,7 +138,6 @@ ALter Table Doctor ADD license_number varchar(20) ;
 Alter table Appointment ADD appointment_type varchar(50) check(appointment_type IN('Consultation', 'Follow-up', 'Check-up', 'Emergency', 'Procedure',' Telemedicine'));
 Alter Table Prescription ADD status varchar(100) check(status IN('Active','Canceled','Completed','Expired','On Hold'));
 Alter Table Medication ADD form varchar(50) check(form IN('Tablet', 'Capsule', 'Liquid', 'Cream', 'Injection'));
-ALTER TABLE Prescription ADD CONSTRAINT UQ_Prescription_notes UNIQUE (notes);
 
 Alter Table Invoice  ADD payment_method varchar(50) check(payment_method IN('Cash', 'Credit Card', 'Insurance', 'Split Payment')); 
 Alter Table Insurance ADD policy_start_date Date;
@@ -230,6 +229,9 @@ VALUES
 ('MED006', 'Ibuprofen', 'Pain Relief', 200, '5.99', 'Tablet', 'DrugCo', '2026-02-28'),
 ('MED007', 'Omeprazole', 'Acid Reducer', 120, '14.50', 'Capsule', 'PharmaCorp', '2025-08-15'),
 ('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10');
+INSERT INTO Medication (med_id, name, category, stock_qty, unit_price, form, supplier, exp_date)
+VALUES ('MED009', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2028-10-10');
+
 
 INSERT INTO Prescription_Details (prescription_id, med_id, dosage, duration, quantity)
 VALUES
@@ -253,15 +255,6 @@ VALUES
 ('INV007', 'PAT007', 'APP007', 180.00, '2024-01-21', 'Pending', 'Insurance'),
 ('INV008', 'PAT008', 'APP008', 195.25, '2024-01-22', 'Written Off', 'Split Payment');
 
-
-
-select * from Insurance;
-select * from Patient;
-select * from Doctor;
-select * from Department;
-select * from Medication;
-
-select * from Appointment;
-select * from Prescription;
-select * from Prescription_Details;
-select * from Invoice;
+Update Medication set stock_qty+=50 where name='Sertraline' AND YEAR(exp_date)>'2025';
+update Appointment set status='completed' where appointment_id='APP007';
+update Insurance set policy_status='Active' where insurance_id='INS006';
