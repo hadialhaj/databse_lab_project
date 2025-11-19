@@ -2,7 +2,7 @@ Create Database Project;
 Use Project;
 
 
-reate Table Insurance(
+Create Table Insurance(
  insurance_id  varchar(50)  Primary Key,
  company_name varchar(50) NOT NULL,
  policy_number varchar(50) NOT NULL,
