@@ -1,5 +1,5 @@
-
-use project;
+create DATABASE p1;
+use p1;
 Create Table Insurance(
  insurance_id  varchar(50)  Primary Key,
  company_name varchar(50) NOT NULL,
@@ -144,11 +144,13 @@ Alter Table Appointment ADD last_updated Datetime DEFAULT GETDATE();
 Alter Table Medication ADD supplier VARCHAR(50);
 Alter Table  Medication ADD exp_date Date;
 Alter Table Medication ADD  min_stock_level INT ;
-Alter Table Medication Drop column min_stock_level;
 Alter Table Patient ADD inserted_by varchar(50);
-Alter Table Patient Drop column inserted_by;
+ALTER TABLE lab_report 
+ADD test_id INT;
 
-
+ALTER TABLE lab_report 
+ADD CONSTRAINT FK_Report_Test 
+FOREIGN KEY (test_id) REFERENCES Lab_Test(test_id);
 ALTER TABLE Rooms
 ADD room_description VARCHAR(100),
     room_capacity INT;
@@ -192,23 +194,23 @@ VALUES
 ('INS012', 'Cigna', 'CG-41516', 12, 'Canceled', '2023-09-01', '2024-08-01');
 
 
-INSERT INTO Patient (patient_id, name, gender, DateofBirth, phone, address, insurance_id, emergency_contact_phone, ssn)
+INSERT INTO Patient (patient_id, name, gender, DateofBirth, phone, address, insurance_id, emergency_contact_phone, ssn,inserted_by)
 VALUES
-('PAT001', 'John Smith', 'Male', '1985-05-15', '555-123-4567', '123 Main St, Boston', 'INS001', '555-987-6543', '123-45-6789'),
-('PAT002', 'Maria Garcia', 'Female', '1990-08-22', '555-234-5678', '456 Oak Ave, Cambridge', 'INS002', '555-876-5432', '234-56-7890'),
-('PAT003', 'James Wilson', 'Male', '1978-12-03', '555-345-6789', '789 Pine St, Somerville', 'INS003', '555-765-4321', '345-67-8901'),
-('PAT004', 'Sarah Johnson', 'Female', '1995-03-18', '555-456-7890', '321 Elm St, Boston', 'INS004', '555-654-3210', '456-78-9012'),
-('PAT005', 'Robert Brown', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS005', '555-543-2109', '567-89-0123'),
-('PAT006', 'Lisa Davis', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS006', '555-432-1098', '678-90-1234'),
-('PAT007', 'Michael Miller', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS007', '555-321-0987', '789-01-2345'),
-('PAT008', 'Emily Taylor', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS008', '555-210-9876', '890-12-3456'),
-('PAT009', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS009', '502-543-2109', '111-89-0123'),
-('PAT010', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS010', '401-432-895', '688-90-1234'),
-('PAT011', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS011', '961-321-0012', '986-01-2345'),
-('PAT012', 'merna alahmad', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS012', '402-210-9545', '892-12-3456'),
-('PAT013', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy',null,  '502-543-2109', '111-89-0123'),
-('PAT014', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', null,'401-432-895', '688-90-1234'),
-('PAT015', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline',null , '961-321-0012', '986-01-2345');
+('PAT001', 'John Smith', 'Male', '1985-05-15', '555-123-4567', '123 Main St, Boston', 'INS001', '555-987-6543', '123-45-6789','john'),
+('PAT002', 'Maria Garcia', 'Female', '1990-08-22', '555-234-5678', '456 Oak Ave, Cambridge', 'INS002', '555-876-5432', '234-56-7890','carl'),
+('PAT003', 'James Wilson', 'Male', '1978-12-03', '555-345-6789', '789 Pine St, Somerville', 'INS003', '555-765-4321', '345-67-8901','darwin'),
+('PAT004', 'Sarah Johnson', 'Female', '1995-03-18', '555-456-7890', '321 Elm St, Boston', 'INS004', '555-654-3210', '456-78-9012','tala'),
+('PAT005', 'Robert Brown', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS005', '555-543-2109', '567-89-0123','Rimas'),
+('PAT006', 'Lisa Davis', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS006', '555-432-1098', '678-90-1234','smith'),
+('PAT007', 'Michael Miller', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS007', '555-321-0987', '789-01-2345','carl'),
+('PAT008', 'Emily Taylor', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS008', '555-210-9876', '890-12-3456','ramon'),
+('PAT009', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy', 'INS009', '502-543-2109', '111-89-0123','ruben'),
+('PAT010', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', 'INS010', '401-432-895', '688-90-1234','sezar'),
+('PAT011', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline', 'INS011', '961-321-0012', '986-01-2345','elias'),
+('PAT012', 'merna alahmad', 'Female', '1992-04-08', '555-890-1234', '258 Spruce Ave, Boston', 'INS012', '402-210-9545', '892-12-3456','hasan'),
+('PAT013', 'mahmoud darwish', 'Male', '1982-07-30', '555-567-8901', '654 Maple Dr, Quincy',null,  '502-543-2109', '111-89-0123','Husein'),
+('PAT014', 'Darwin neves', 'Female', '1988-11-12', '555-678-9012', '987 Birch Ln, Newton', null,'401-432-895', '688-90-1234','Mohamad'),
+('PAT015', 'marlen sensei', 'Male', '1975-09-25', '555-789-0123', '147 Cedar Rd, Brookline',null , '961-321-0012', '986-01-2345','marlin');
 
 
 INSERT INTO Department (dept_id, dept_name, floor, head_doctor_id, department_status)
@@ -265,17 +267,17 @@ VALUES
 ('PRES008', 'APP008', 'Complete 10-day course', '2024-01-22', 'Expired');
 
 
-INSERT INTO Medication (med_id, name, category, stock_qty, unit_price, form, supplier, exp_date)
+INSERT INTO Medication (med_id, name, category, stock_qty, unit_price, form, supplier, exp_date,min_stock_level)
 VALUES
-('MED001', 'Amoxicillin', 'Antibiotic', 100, '15.99', 'Capsule', 'PharmaCorp', '2025-06-30'),
-('MED002', 'Lisinopril', 'Blood Pressure', 75, '12.50', 'Tablet', 'MediSupply', '2024-12-31'),
-('MED003', 'Metformin', 'Diabetes', 150, '8.75', 'Tablet', 'DrugCo', '2025-03-15'),
-('MED004', 'Atorvastatin', 'Cholesterol', 90, '22.00', 'Tablet', 'PharmaCorp', '2024-11-30'),
-('MED005', 'Albuterol', 'Asthma', 60, '18.25', 'Injection', 'MediSupply', '2025-01-20'),
-('MED006', 'Ibuprofen', 'Pain Relief', 200, '5.99', 'Tablet', 'DrugCo', '2026-02-28'),
-('MED007', 'Omeprazole', 'Acid Reducer', 120, '14.50', 'Capsule', 'PharmaCorp', '2025-08-15'),
-('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10'),
-('MED009', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2028-10-10');
+('MED001', 'Amoxicillin', 'Antibiotic', 100, '15.99', 'Capsule', 'PharmaCorp', '2025-06-30',10),
+('MED002', 'Lisinopril', 'Blood Pressure', 75, '12.50', 'Tablet', 'MediSupply', '2024-12-31',12),
+('MED003', 'Metformin', 'Diabetes', 150, '8.75', 'Tablet', 'DrugCo', '2025-03-15',50),
+('MED004', 'Atorvastatin', 'Cholesterol', 90, '22.00', 'Tablet', 'PharmaCorp', '2024-11-30',1),
+('MED005', 'Albuterol', 'Asthma', 60, '18.25', 'Injection', 'MediSupply', '2025-01-20',20),
+('MED006', 'Ibuprofen', 'Pain Relief', 200, '5.99', 'Tablet', 'DrugCo', '2026-02-28',20),
+('MED007', 'Omeprazole', 'Acid Reducer', 120, '14.50', 'Capsule', 'PharmaCorp', '2025-08-15',30),
+('MED008', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2024-10-10',14),
+('MED009', 'Sertraline', 'Antidepressant', 80, '25.75', 'Tablet', 'MediSupply', '2028-10-10',15);
 
 
 INSERT INTO Prescription_Details (prescription_id, med_id, dosage, duration, quantity)
@@ -343,14 +345,14 @@ VALUES
 
 INSERT INTO Lab_Test (test_id, test_name, result, cost, appointment_id, lab_notes, lab_type)
 VALUES
-(1, 'Blood Test','Normal',75.00,  'APP001', 'Fasting blood sample collected at 8:00 AM', 'Blood'),
-(2, 'MRI Scan','Clear',500.00,  'APP002', 'Full body MRI with contrast dye', 'Imaging'),
-(3, 'Urine Analysis','Abnormal',50.00,  'APP003', 'Mid-stream urine sample shows cloudiness', 'Urine'),
-(4, 'X-Ray Chest','Normal',120.00,  'APP004', 'PA and lateral views taken', 'Imaging'),
-(5, 'ECG','Regular',90.00,  'APP005', '12-lead ECG performed at rest', 'Other'),
-(6, 'CT Scan','Normal',650.00, 'APP006', 'CT abdomen with oral contrast', 'Imaging'),
-(7, 'Blood Sugar','High', 45.00, 'APP007', 'Random blood glucose test', 'Blood'),
-(8, 'Ultrasound','Clear',280.00, 'APP008', 'Abdominal ultrasound after 6hr fasting', 'Imaging')
+(01, 'Blood Test','Normal',75.00,  'APP001', 'Fasting blood sample collected at 8:00 AM', 'Blood'),
+(02, 'MRI Scan','Clear',500.00,  'APP002', 'Full body MRI with contrast dye', 'Imaging'),
+(03, 'Urine Analysis','Abnormal',50.00,  'APP003', 'Mid-stream urine sample shows cloudiness', 'Urine'),
+(04, 'X-Ray Chest','Normal',120.00,  'APP004', 'PA and lateral views taken', 'Imaging'),
+(05, 'ECG','Regular',90.00,  'APP005', '12-lead ECG performed at rest', 'Other'),
+(06, 'CT Scan','Normal',650.00, 'APP006', 'CT abdomen with oral contrast', 'Imaging'),
+(07, 'Blood Sugar','High', 45.00, 'APP007', 'Random blood glucose test', 'Blood'),
+(08, 'Ultrasound','Clear',280.00, 'APP008', 'Abdominal ultrasound after 6hr fasting', 'Imaging')
 ;
 
 INSERT INTO Lab_Technician (tech_id, name, phone, specialization, email, hire_date)
@@ -364,16 +366,16 @@ VALUES
 (7, 'Karen White','555-0107', 'Immunology', 'karen.white@hospital.com', '2020-09-05'),
 (8, 'David Lee','555-0108', 'Toxicology', 'david.lee@hospital.com', '2021-12-15');
 
-INSERT INTO lab_report (report_id, report_date, notes, tech_id, report_type, reviewed_by)
+INSERT INTO lab_report (report_id, report_date, notes, tech_id, report_type, reviewed_by,test_id)
 VALUES
-(1, '2024-01-15', 'Complete blood count within normal ranges', 1, 'Hematology', 'Dr. Smith'),
-(2, '2024-01-16', 'MRI shows no abnormalities detected',2, 'Radiology', 'Dr. Johnson'),
-(3, '2024-01-17', 'Urine culture positive for infection',3, 'Microbiology', 'Dr. Brown'),
-(4, '2024-01-18', 'Chest X-ray clear, no pneumonia',4, 'Radiology', 'Dr. Wilson'),
-(5, '2024-01-19', 'ECG shows normal sinus rhythm',5, 'Cardiology', 'Dr. Garcia'),
-(6, '2024-01-20', 'CT scan shows no internal injuries',6, 'Radiology', 'Dr. Chen'),
-(7, '2024-01-21', 'Blood glucose levels elevated, follow up needed',7, 'Biochemistry', 'Dr. Taylor'),
-(8, '2024-01-22', 'Abdominal ultrasound normal',8, 'Radiology', 'Dr. Martinez');
+(1, '2024-01-15', 'Complete blood count within normal ranges', 1, 'Hematology', 'Dr. Smith',01),
+(2, '2024-01-16', 'MRI shows no abnormalities detected',2, 'Radiology', 'Dr. Johnson',02),
+(3, '2024-01-17', 'Urine culture positive for infection',3, 'Microbiology', 'Dr. Brown',03),
+(4, '2024-01-18', 'Chest X-ray clear, no pneumonia',4, 'Radiology', 'Dr. Wilson',04),
+(5, '2024-01-19', 'ECG shows normal sinus rhythm',5, 'Cardiology', 'Dr. Garcia',05),
+(6, '2024-01-20', 'CT scan shows no internal injuries',6, 'Radiology', 'Dr. Chen',06),
+(7, '2024-01-21', 'Blood glucose levels elevated, follow up needed',7, 'Biochemistry', 'Dr. Taylor',07),
+(8, '2024-01-22', 'Abdominal ultrasound normal',8, 'Radiology', 'Dr. Martinez',08);
 
 
 Update Medication set stock_qty+=50 where name='Sertraline' AND YEAR(exp_date)>'2025';
@@ -381,6 +383,11 @@ Update Medication set stock_qty+=50 where name='Sertraline' AND YEAR(exp_date)>'
 update Appointment set status='completed' where appointment_id='APP007';
 
 update Insurance set policy_status='Active' where insurance_id='INS006';
+Alter Table Medication Drop column min_stock_level;
+
+Alter Table Patient Drop column inserted_by;
+
+
 
 UPDATE Rooms
 SET daily_rate = daily_rate + 50
@@ -503,4 +510,85 @@ join Department dp ON d.dept_id=dp.dept_id
  select p.med_id,COUNT(p.med_id) as apperin
  from Prescription_Details p
  group by p.med_id;
+ --16:available rooms
 
+ SELECT room_id, room_type, daily_rate, status, room_description
+FROM Rooms
+WHERE status = 'Available';
+
+--17 completed payments
+SELECT payment_id, amount_paid, method, payment_date, invoice_id, transaction_id
+FROM Payments
+WHERE payment_status = 'Completed';
+
+--18 Admissions that are currently pending (not discharged)
+SELECT admission_id, admission_date, discharge_date, patient_id, room_id, admission_type
+FROM admissions
+WHERE discharge_date = 'Pending';
+
+--19 Lab tests costing more than 100
+SELECT test_id, test_name, lab_type, cost, lab_notes
+FROM Lab_Test
+WHERE cost > 100;
+
+--20 row count of technicians
+SELECT COUNT(*) AS technician_count
+FROM Lab_Technician;
+
+--21 admissions with room details (join admissions -Rooms)
+SELECT a.admission_id, a.admission_date, a.discharge_date, a.patient_id,
+       r.room_id, r.room_type, r.room_description, r.room_capacity
+FROM admissions a
+JOIN Rooms r ON a.room_id = r.room_id;
+
+--22 Latest lab report per technician (technician name + most recent report date)
+SELECT lt.tech_id, lt.name AS technician_name, MAX(lr.report_date) AS last_report_date
+FROM Lab_Technician lt
+LEFT JOIN lab_report lr ON lt.tech_id = lr.tech_id
+GROUP BY lt.tech_id, lt.name;
+
+
+--23 Total payments grouped by payment method
+SELECT method, COUNT(*) AS payments_count, SUM(amount_paid) AS total_amount
+FROM Payments
+GROUP BY method
+ORDER BY total_amount DESC;
+
+--24 Number of lab tests per lab_type
+SELECT lab_type, COUNT(*) AS tests_count
+FROM Lab_Test
+GROUP BY lab_type
+ORDER BY tests_count DESC;
+
+--25  rooms with capacity greater than 2
+SELECT room_id, room_type, room_capacity
+FROM Rooms
+WHERE room_capacity > 2;
+
+--26 highest payment made to lowest
+SELECT payment_id, amount_paid, method
+FROM Payments
+ORDER BY amount_paid DESC;
+
+
+--27 List patients still admitted (discharge_date IS NULL)
+SELECT admission_id, patient_id, room_id, admission_date
+FROM Admissions
+WHERE discharge_date IS NULL;
+
+
+--28 tests that contain the word “blood”
+SELECT test_id, test_name, cost
+FROM Lab_Test
+WHERE test_name LIKE '%Blood%';
+
+--29 technicians ordered by experience (highest first)
+SELECT tech_id, name, hire_date
+FROM Lab_Technician
+ORDER BY hire_date ASC;
+
+--30 Show reports with technician name
+SELECT lr.report_id,lr.report_date,lr.notes,lt.test_id,lt.test_name,lt.result,lt.cost,ltech.name AS technician_name
+FROM lab_report lr
+INNER JOIN Lab_Test lt ON lr.test_id = lt.test_id
+INNER JOIN Lab_Technician ltech ON lr.tech_id = ltech.tech_id;
